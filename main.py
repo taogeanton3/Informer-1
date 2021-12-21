@@ -1,14 +1,14 @@
 import warnings
 
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import torch
 from sklearn.preprocessing import StandardScaler
 from torch import nn, optim
 from torch.utils.data import DataLoader
-from tqdm import tqdm
-import matplotlib.pyplot as plt
 from torch.utils.tensorboard import SummaryWriter
+from tqdm import tqdm
 
 from data.dataset import MyDataset
 from model.informer import Informer
@@ -32,7 +32,7 @@ if __name__ == "__main__":
 
     df = pd.read_csv(rootpath + "data/ETT/ETTh1.csv")
     train = df.iloc[: int(trainrate * len(df)), :]
-    test = df.iloc[int(trainrate * len(df)) :, :]
+    test = df.iloc[int(trainrate * len(df)):, :]
 
     scaler = StandardScaler()
     scaler.fit(train.iloc[:, 1:].values)
@@ -79,9 +79,7 @@ if __name__ == "__main__":
                 [batch_y.shape[0], pred_len, batch_y.shape[-1]]
             ).float()
             dec_inp = (
-                torch.cat([batch_y[:, :label_len, :], dec_inp], dim=1)
-                .float()
-                .to(device)
+                torch.cat([batch_y[:, :label_len, :], dec_inp], dim=1).float().to(device)
             )
 
             pred = model(batch_x, batch_x_mark, dec_inp, batch_y_mark)
