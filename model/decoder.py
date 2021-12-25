@@ -10,10 +10,8 @@ from utils.mask import get_attn_subsequence_mask
 class DecoderLayer(nn.Module):
     def __init__(self, d_k, d_v, d_model, d_ff, n_heads, c, dropout):
         super(DecoderLayer, self).__init__()
-        self.self_attention = ProbAttention(
-            d_k, d_v, d_model, n_heads, c, dropout, mix=True
-        )
-        self.cross_attention = FullAttention(d_k, d_v, d_model, n_heads, dropout)
+        self.self_attention = ProbAttention(d_k, d_v, d_model, n_heads, c, dropout, mix=True)
+        self.cross_attention = FullAttention(d_k, d_v, d_model, n_heads, dropout, mix=False)
 
         self.conv1 = nn.Conv1d(in_channels=d_model, out_channels=d_ff, kernel_size=(1,))
         self.conv2 = nn.Conv1d(in_channels=d_ff, out_channels=d_model, kernel_size=(1,))

@@ -10,5 +10,5 @@ def get_attn_subsequence_mask(seq):
     """
     attn_shape = [seq.size(0), seq.size(1), seq.size(1)]
     subsequence_mask = np.triu(np.ones(attn_shape), k=1)  # 不包括对角线的上三角矩阵
-    subsequence_mask = torch.from_numpy(subsequence_mask).byte()
+    subsequence_mask = torch.from_numpy(subsequence_mask).bool()
     return subsequence_mask.to(device)  # [batch_size, tgt_len, tgt_len]

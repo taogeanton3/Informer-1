@@ -7,7 +7,7 @@ import torch
 from sklearn.preprocessing import StandardScaler
 from torch import nn, optim
 from torch.utils.data import DataLoader
-from torch.utils.tensorboard import SummaryWriter
+# from torch.utils.tensorboard import SummaryWriter
 from tqdm import tqdm
 
 from data.dataset import MyDataset
@@ -17,16 +17,16 @@ from utils.setseed import set_seed
 warnings.filterwarnings("ignore")
 
 lr = 0.0001
-epochs = 10
+epochs = 4
 batch_size = 32
 seq_len = 96
 label_len = 48
 pred_len = 24
-rootpath = "./Informer/"
+rootpath = "./"
 trainrate = 0.7
 
 if __name__ == "__main__":
-    writer = SummaryWriter(rootpath + "log/tensorboard/")
+    # writer = SummaryWriter(rootpath + "log/tensorboard/")
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     set_seed(0)
 
@@ -48,20 +48,20 @@ if __name__ == "__main__":
     optimizer = optim.Adam(model.parameters(), lr=lr, weight_decay=1e-4)
 
     # show
-    print("show...")
-    for (batch_x, batch_y, batch_x_mark, batch_y_mark) in tqdm(trainloader):
-        batch_x = batch_x.float().to(device)
-        batch_y = batch_y.float()
-        batch_x_mark = batch_x_mark.float().to(device)
-        batch_y_mark = batch_y_mark.float().to(device)
-
-        dec_inp = torch.zeros([batch_y.shape[0], pred_len, batch_y.shape[-1]]).float()
-        dec_inp = (
-            torch.cat([batch_y[:, :label_len, :], dec_inp], dim=1).float().to(device)
-        )
-        with writer as w:
-            w.add_graph(model, (batch_x, batch_x_mark, dec_inp, batch_y_mark))
-        break
+    # print("show...")
+    # for (batch_x, batch_y, batch_x_mark, batch_y_mark) in tqdm(trainloader):
+    #     batch_x = batch_x.float().to(device)
+    #     batch_y = batch_y.float()
+    #     batch_x_mark = batch_x_mark.float().to(device)
+    #     batch_y_mark = batch_y_mark.float().to(device)
+    #
+    #     dec_inp = torch.zeros([batch_y.shape[0], pred_len, batch_y.shape[-1]]).float()
+    #     dec_inp = (
+    #         torch.cat([batch_y[:, :label_len, :], dec_inp], dim=1).float().to(device)
+    #     )
+    #     with writer as w:
+    #         w.add_graph(model, (batch_x, batch_x_mark, dec_inp, batch_y_mark))
+    #     break
 
     # train
     print("train...")
@@ -98,7 +98,7 @@ if __name__ == "__main__":
 
     # test
     print("test...")
-    # torch.load("./Informer/log/informer.pkl").to(device)
+    # model = torch.load("./Informer/log/informer.pkl").to(device)
 
     model.eval()
     losses = []
