@@ -45,7 +45,7 @@ if __name__ == "__main__":
 
     model = Informer().to(device)
     criterion = nn.MSELoss()
-    optimizer = optim.Adam(model.parameters(), lr=lr, weight_decay=1e-4)
+    optimizer = optim.Adam(model.parameters(), lr=lr, weight_decay=1e-3)
 
     # show
     # print("show...")
