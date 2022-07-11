@@ -111,7 +111,7 @@ if __name__ == "__main__":
 
         dec_inp = torch.zeros([batch_y.shape[0], pred_len, batch_y.shape[-1]]).float()
         dec_inp = (
-            torch.cat([batch_y[:, :label_len, :], dec_inp], dim=1).float().to(device)
+            torch.cat([batch_x[:, -label_len:, :], dec_inp], dim=1).float().to(device)
         )
 
         pred = model(batch_x, batch_x_mark, dec_inp, batch_y_mark)
