@@ -75,12 +75,8 @@ if __name__ == "__main__":
             batch_x_mark = batch_x_mark.float().to(device)
             batch_y_mark = batch_y_mark.float().to(device)
 
-            dec_inp = torch.zeros(
-                [batch_y.shape[0], pred_len, batch_y.shape[-1]]
-            ).float()
-            dec_inp = (
-                torch.cat([batch_x[:, -label_len:, :], dec_inp], dim=1).float().to(device)
-            )
+            dec_inp = torch.zeros([batch_y.shape[0], pred_len, batch_y.shape[-1]]).float()
+            dec_inp = torch.cat([batch_y[:, :self.label_len, :], dec_inp], dim=1).float().to(self.device)
 
             pred = model(batch_x, batch_x_mark, dec_inp, batch_y_mark)
             pred = pred[:, -pred_len:, :].to(device)
@@ -110,9 +106,7 @@ if __name__ == "__main__":
         batch_y_mark = batch_y_mark.float().to(device)
 
         dec_inp = torch.zeros([batch_y.shape[0], pred_len, batch_y.shape[-1]]).float()
-        dec_inp = (
-            torch.cat([batch_x[:, -label_len:, :], dec_inp], dim=1).float().to(device)
-        )
+        dec_inp = torch.cat([batch_y[:, :self.label_len, :], dec_inp], dim=1).float().to(self.device)
 
         pred = model(batch_x, batch_x_mark, dec_inp, batch_y_mark)
 
